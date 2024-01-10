@@ -21,7 +21,7 @@
               <div class="col-start-1 col-end-3">
                 <button-component text="0" :full-width="true" @click="() => buttonClicked(0)" />
               </div>
-              <button-component text="." @click="() => buttonClicked(parseFloat('.'))" />
+              <button-component text="." @click="() => buttonClicked('.')" />
             </div>
           </div>
         </div>
@@ -69,8 +69,10 @@ function emptyLast() {
   numbers.value.splice(numbers.value.length - 1, 1);
 }
 
-function buttonClicked(number: number) {
+function buttonClicked(number: number | string) {
+  debugger;
   console.log("1. ", number);
+  console.log("1. ", typeof number);
   if (numbers.value.length === 0) {
     console.log("2. ", number);
     numbers.value.push(number);
@@ -79,12 +81,17 @@ function buttonClicked(number: number) {
   const lastNumber = numbers.value[numbers.value.length - 1];
   console.log("3. ", lastNumber);
 
-  if (typeof lastNumber === "string") {
+  if (lastNumber === "$") {
     console.log("4. ", number);
     numbers.value[numbers.value.length - 1] = number;
   } else {
-    const newNumber = Number(lastNumber) * 10 + number;
-    console.log("5. ", newNumber);
+    let newNumber: number;
+    if (number === ".") {
+      newNumber = Number(lastNumber) + 0.1;
+    } else {
+      newNumber = Number(lastNumber) * 10 + Number(number);
+    }
+    console.log("6. ", newNumber);
     numbers.value[numbers.value.length - 1] = newNumber;
   }
 }
