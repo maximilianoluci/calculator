@@ -70,18 +70,13 @@ function emptyLast() {
 }
 
 function buttonClicked(number: string) {
-  console.log("1. ", number);
-  console.log("1. ", typeof number);
   if (numbers.value.length === 0) {
-    console.log("2. ", number);
     numbers.value.push(number);
     return;
   }
   const lastNumber: string = numbers.value[numbers.value.length - 1];
-  console.log("3. ", lastNumber);
 
   if (lastNumber === "$") {
-    console.log("4. ", number);
     numbers.value[numbers.value.length - 1] = number;
   } else {
     numbers.value[numbers.value.length - 1] = lastNumber + number;
@@ -105,8 +100,6 @@ async function performOperation(type: "add" | "subtract" | "multiply" | "divide"
     return;
   }
 
-  console.log(body);
-
   numbers.value.splice(numbers.value.length - 2, 2);
 
   result = await calculate(url, body);
@@ -114,14 +107,11 @@ async function performOperation(type: "add" | "subtract" | "multiply" | "divide"
   result && numbers.value.push(result);
 
   numbers.value.push("$");
-
-  console.log(`result: ${result}`);
 }
 
 async function calculate(url: string, body: any): Promise<string | undefined> {
   try {
     const response = await axios.post(url, body);
-    console.log(response.data);
     return response.data ? response.data : undefined;
   } catch (error) {
     console.error(error);
