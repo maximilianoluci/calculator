@@ -9,17 +9,17 @@
         <div class="col-span-4">
           <div class="grid grid-flow-col">
             <div class="grid grid-cols-3 gap-3">
-              <button-component text="9" @click="() => buttonClicked(9)" />
-              <button-component text="8" @click="() => buttonClicked(8)" />
-              <button-component text="7" @click="() => buttonClicked(7)" />
-              <button-component text="6" @click="() => buttonClicked(6)" />
-              <button-component text="5" @click="() => buttonClicked(5)" />
-              <button-component text="4" @click="() => buttonClicked(4)" />
-              <button-component text="3" @click="() => buttonClicked(3)" />
-              <button-component text="2" @click="() => buttonClicked(2)" />
-              <button-component text="1" @click="() => buttonClicked(1)" />
+              <button-component text="9" @click="() => buttonClicked('9')" />
+              <button-component text="8" @click="() => buttonClicked('8')" />
+              <button-component text="7" @click="() => buttonClicked('7')" />
+              <button-component text="6" @click="() => buttonClicked('6')" />
+              <button-component text="5" @click="() => buttonClicked('5')" />
+              <button-component text="4" @click="() => buttonClicked('4')" />
+              <button-component text="3" @click="() => buttonClicked('3')" />
+              <button-component text="2" @click="() => buttonClicked('2')" />
+              <button-component text="1" @click="() => buttonClicked('1')" />
               <div class="col-start-1 col-end-3">
-                <button-component text="0" :full-width="true" @click="() => buttonClicked(0)" />
+                <button-component text="0" :full-width="true" @click="() => buttonClicked('0')" />
               </div>
               <button-component text="." @click="() => buttonClicked('.')" />
             </div>
@@ -59,7 +59,7 @@ function toggleUiMode(): void {
   }
 }
 
-const numbers = ref<Array<number | string>>([]);
+const numbers = ref<Array<string>>([]);
 
 function emptyArray() {
   numbers.value = [];
@@ -69,8 +69,7 @@ function emptyLast() {
   numbers.value.splice(numbers.value.length - 1, 1);
 }
 
-function buttonClicked(number: number | string) {
-  debugger;
+function buttonClicked(number: string) {
   console.log("1. ", number);
   console.log("1. ", typeof number);
   if (numbers.value.length === 0) {
@@ -78,21 +77,14 @@ function buttonClicked(number: number | string) {
     numbers.value.push(number);
     return;
   }
-  const lastNumber = numbers.value[numbers.value.length - 1];
+  const lastNumber: string = numbers.value[numbers.value.length - 1];
   console.log("3. ", lastNumber);
 
   if (lastNumber === "$") {
     console.log("4. ", number);
     numbers.value[numbers.value.length - 1] = number;
   } else {
-    let newNumber: number;
-    if (number === ".") {
-      newNumber = Number(lastNumber) + 0.1;
-    } else {
-      newNumber = Number(lastNumber) * 10 + Number(number);
-    }
-    console.log("6. ", newNumber);
-    numbers.value[numbers.value.length - 1] = newNumber;
+    numbers.value[numbers.value.length - 1] = lastNumber + number;
   }
 }
 
@@ -102,7 +94,7 @@ function enterClicked() {
 
 async function performOperation(type: "add" | "subtract" | "multiply" | "divide") {
   const url = `http://localhost:3000/calculator/${type}`;
-  let result: number | undefined;
+  let result: string | undefined;
 
   const body = {
     a: numbers.value[numbers.value.length - 2],
@@ -119,18 +111,18 @@ async function performOperation(type: "add" | "subtract" | "multiply" | "divide"
 
   result = await calculate(url, body);
 
-  numbers.value.push(Number(result));
+  result && numbers.value.push(result);
 
   numbers.value.push("$");
 
   console.log(`result: ${result}`);
 }
 
-async function calculate(url: string, body: any): Promise<number | undefined> {
+async function calculate(url: string, body: any): Promise<string | undefined> {
   try {
     const response = await axios.post(url, body);
     console.log(response.data);
-    return response.data ? Number(response.data) : undefined;
+    return response.data ? response.data : undefined;
   } catch (error) {
     console.error(error);
     return undefined;
