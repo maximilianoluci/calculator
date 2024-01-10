@@ -16,15 +16,7 @@ import { computed } from "vue";
 
 const props = defineProps<{
   text: string;
-  color?:
-    | "primary"
-    | "secondary"
-    | "success"
-    | "danger"
-    | "warning"
-    | "info"
-    | "dark"
-    | "transparent";
+  color?: "primary" | "secondary" | "dark";
   fullWidth?: boolean;
   icon?: string;
   size?: "xs" | "sm" | "base" | "lg" | "xl";
@@ -64,50 +56,6 @@ const computedClass = computed(() => {
         "dark:focus:ring-gray-800",
       );
       break;
-    case "success":
-      classes.push(
-        "text-white",
-        "bg-green-500",
-        "hover:bg-green-800",
-        "focus:ring-green-300",
-        "dark:bg-green-600",
-        "dark:hover:bg-green-700",
-        "dark:focus:ring-green-800",
-      );
-      break;
-    case "danger":
-      classes.push(
-        "text-white",
-        "bg-red-500",
-        "hover:bg-red-800",
-        "focus:ring-red-300",
-        "dark:bg-red-600",
-        "dark:hover:bg-red-700",
-        "dark:focus:ring-red-800",
-      );
-      break;
-    case "warning":
-      classes.push(
-        "text-white",
-        "bg-yellow-500",
-        "hover:bg-yellow-800",
-        "focus:ring-yellow-300",
-        "dark:bg-yellow-600",
-        "dark:hover:bg-yellow-700",
-        "dark:focus:ring-yellow-800",
-      );
-      break;
-    case "info":
-      classes.push(
-        "text-white",
-        "bg-cyan-500",
-        "hover:bg-cyan-800",
-        "focus:ring-cyan-300",
-        "dark:bg-cyan-600",
-        "dark:hover:bg-cyan-700",
-        "dark:focus:ring-cyan-800",
-      );
-      break;
     case "dark":
       classes.push(
         "text-white",
@@ -121,8 +69,6 @@ const computedClass = computed(() => {
         "dark:focus:ring-gray-200",
       );
       break;
-    case "transparent":
-      classes.push("text-black", "border", "border-none", "focus:outline-none", "dark:text-white");
   }
 
   switch (props.size) {
