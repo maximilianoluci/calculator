@@ -4,25 +4,25 @@ const Calculator = require("./calculator");
 const app = express();
 const calc = new Calculator();
 
-app.get("/add", (req, res) => {
+app.get("/calculator/add", (req, res) => {
   const { a, b } = req.query;
   const result = calc.add(parseFloat(a), parseFloat(b));
   res.send(`Result: ${result}`);
 });
 
-app.get("/subtract", (req, res) => {
+app.get("/calculator/subtract", (req, res) => {
   const { a, b } = req.query;
   const result = calc.subtract(parseFloat(a), parseFloat(b));
   res.send(`Result: ${result}`);
 });
 
-app.get("/multiply", (req, res) => {
+app.get("/calculator/multiply", (req, res) => {
   const { a, b } = req.query;
   const result = calc.multiply(parseFloat(a), parseFloat(b));
   res.send(`Result: ${result}`);
 });
 
-app.get("/divide", (req, res) => {
+app.get("/calculator/divide", (req, res) => {
   const { a, b } = req.query;
   const result = calc.divide(parseFloat(a), parseFloat(b));
   res.send(`Result: ${result}`);
