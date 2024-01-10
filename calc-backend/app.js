@@ -3,29 +3,32 @@ const cors = require("cors");
 const Calculator = require("./calculator");
 
 const app = express();
+const router = express.Router();
 app.use(cors());
+app.use(express.json());
+app.use(router);
 const calc = new Calculator();
 
-app.get("/calculator/add", (req, res) => {
-  const { a, b } = req.query;
+router.post("/calculator/add", (req, res) => {
+  const { a, b } = req.body;
   const result = calc.add(parseFloat(a), parseFloat(b));
   res.send(`${result}`);
 });
 
-app.get("/calculator/subtract", (req, res) => {
-  const { a, b } = req.query;
+router.post("/calculator/subtract", (req, res) => {
+  const { a, b } = req.body;
   const result = calc.subtract(parseFloat(a), parseFloat(b));
   res.send(`${result}`);
 });
 
-app.get("/calculator/multiply", (req, res) => {
-  const { a, b } = req.query;
+router.post("/calculator/multiply", (req, res) => {
+  const { a, b } = req.body;
   const result = calc.multiply(parseFloat(a), parseFloat(b));
   res.send(`${result}`);
 });
 
-app.get("/calculator/divide", (req, res) => {
-  const { a, b } = req.query;
+router.post("/calculator/divide", (req, res) => {
+  const { a, b } = req.body;
   const result = calc.divide(parseFloat(a), parseFloat(b));
   res.send(`${result}`);
 });

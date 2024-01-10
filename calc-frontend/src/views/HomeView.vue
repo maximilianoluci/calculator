@@ -1,59 +1,52 @@
 <template>
-  <div class="h-auto p-3">
-    <button-component
-      text="Toggle Dark/Light Mode"
-      color="dark"
-      :full-width="true"
-      @click="toggleUiMode"
-    />
-    <hr class="my-3 h-px border-0 bg-gray-200 dark:bg-gray-700" />
-    <textarea-component class="mb-3" :numbers="numbers" />
+  <div class="flex h-screen p-3">
+    <div class="m-auto">
+      <button-component text="Toggle Dark/Light Mode" color="dark" :full-width="true" @click="toggleUiMode" />
+      <hr class="my-3 h-px border-0 bg-gray-200 dark:bg-gray-700" />
+      <screen-component class="mb-3" :numbers="numbers" />
 
-    <button-component class="mb-3" text="CLEAR" color="secondary" :full-width="true" />
-
-    <div class="mb-3 grid grid-cols-5 gap-3">
-      <div class="col-span-4">
-        <div class="grid grid-flow-col">
-          <div class="grid grid-cols-3 gap-3">
-            <button-component text="9" />
-            <button-component text="8" />
-            <button-component text="7" />
-            <button-component text="6" />
-            <button-component text="5" />
-            <button-component text="4" />
-            <button-component text="3" />
-            <button-component text="2" />
-            <button-component text="1" />
-            <div class="col-start-1 col-end-4">
-              <button-component text="0" :full-width="true" />
+      <div class="mb-3 grid grid-cols-6 gap-3">
+        <div class="col-span-4">
+          <div class="grid grid-flow-col">
+            <div class="grid grid-cols-3 gap-3">
+              <button-component text="9" @click="() => buttonClicked(9)" />
+              <button-component text="8" @click="() => buttonClicked(8)" />
+              <button-component text="7" @click="() => buttonClicked(7)" />
+              <button-component text="6" @click="() => buttonClicked(6)" />
+              <button-component text="5" @click="() => buttonClicked(5)" />
+              <button-component text="4" @click="() => buttonClicked(4)" />
+              <button-component text="3" @click="() => buttonClicked(3)" />
+              <button-component text="2" @click="() => buttonClicked(2)" />
+              <button-component text="1" @click="() => buttonClicked(1)" />
+              <div class="col-start-1 col-end-3">
+                <button-component text="0" :full-width="true" @click="() => buttonClicked(0)" />
+              </div>
+              <button-component text="." @click="() => buttonClicked(parseFloat('.'))" />
             </div>
           </div>
         </div>
-      </div>
-      <div>
-        <div class="grid grid-cols-1 gap-3">
-          <button-component text="/" color="secondary" />
-          <button-component text="*" color="secondary" />
-          <button-component text="-" color="secondary" />
-          <button-component text="+" color="secondary" />
+        <div>
+          <div class="grid grid-cols-1 gap-3">
+            <button-component text="/" color="operators" @click="() => performOperation('divide')" />
+            <button-component text="*" color="operators" @click="() => performOperation('multiply')" />
+            <button-component text="-" color="operators" @click="() => performOperation('subtract')" />
+            <button-component text="+" color="operators" @click="() => performOperation('add')" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-y-3">
+          <button-component text="AC" color="operators" :full-width="true" @click="emptyArray" />
+          <button-component text="CE" color="operators" :full-width="true" @click="emptyLast" />
+          <button-component text="&#9166;" color="operators" :full-width="true" @click="enterClicked" />
         </div>
       </div>
-    </div>
-    <div class="grid grid-cols-1 gap-y-3">
-      <button-component text="ENTER" color="secondary" :full-width="true" />
-      <button-component
-        text="CALCULATE"
-        color="secondary"
-        :full-width="true"
-        @click="calculate(numbers)"
-      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import ButtonComponent from "@/components/button/ButtonComponent.vue";
-import TextareaComponent from "@/components/textarea/TextareaComponent.vue";
+import ScreenComponent from "@/components/screen/ScreenComponent.vue";
 import axios from "axios";
 
 let isDarkMode: boolean = false;
@@ -66,18 +59,74 @@ function toggleUiMode(): void {
   }
 }
 
-const numbers = [0, 0];
-const type = "add";
-const url = `http://localhost:3000/calculator/${type}?a=${numbers[0]}&b=${numbers[1]}`;
+const numbers = ref<Array<number | string>>([]);
 
-async function calculate(arr: number[]) {
-  axios
-    .get(url, {
-      params: {
-        a: arr[0],
-        b: arr[1],
-      },
-    })
-    .then((response) => console.log(response.data));
+function emptyArray() {
+  numbers.value = [];
+}
+
+function emptyLast() {
+  numbers.value.splice(numbers.value.length - 1, 1);
+}
+
+function buttonClicked(number: number) {
+  console.log("1. ", number);
+  if (numbers.value.length === 0) {
+    console.log("2. ", number);
+    numbers.value.push(number);
+    return;
+  }
+  const lastNumber = numbers.value[numbers.value.length - 1];
+  console.log("3. ", lastNumber);
+
+  if (typeof lastNumber === "string") {
+    console.log("4. ", number);
+    numbers.value[numbers.value.length - 1] = number;
+  } else {
+    const newNumber = Number(lastNumber) * 10 + number;
+    console.log("5. ", newNumber);
+    numbers.value[numbers.value.length - 1] = newNumber;
+  }
+}
+
+function enterClicked() {
+  numbers.value.push("$");
+}
+
+async function performOperation(type: "add" | "subtract" | "multiply" | "divide") {
+  const url = `http://localhost:3000/calculator/${type}`;
+  let result: number | undefined;
+
+  const body = {
+    a: numbers.value[numbers.value.length - 2],
+    b: numbers.value[numbers.value.length - 1],
+  };
+
+  if (body.a === undefined || body.b === undefined || Number.isNaN(body.a) || Number.isNaN(body.b)) {
+    return;
+  }
+
+  console.log(body);
+
+  numbers.value.splice(numbers.value.length - 2, 2);
+
+  result = await calculate(url, body);
+
+  numbers.value.push(Number(result));
+
+  numbers.value.push("$");
+
+  console.log(`result: ${result}`);
+}
+
+async function calculate(url: string, body: any): Promise<number | undefined> {
+  try {
+    const response = await axios.post(url, body);
+    console.log(response.data);
+    return response.data ? Number(response.data) : undefined;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
 }
 </script>

@@ -1,12 +1,7 @@
 <template>
-  <button
-    type="button"
-    class="rounded-lg text-center font-medium focus:ring-1"
-    :class="computedClass"
-    @click="onClick"
-  >
+  <button type="button" class="rounded-lg text-center font-medium focus:ring-1" :class="computedClass" @click="onClick">
     <div class="flex items-center justify-center">
-      <span v-if="text" :class="icon ? 'ml-3' : ''">{{ text }}</span>
+      <span>{{ text }}</span>
     </div>
   </button>
 </template>
@@ -16,9 +11,8 @@ import { computed } from "vue";
 
 const props = defineProps<{
   text: string;
-  color?: "primary" | "secondary" | "dark";
+  color?: "numbers" | "operators" | "dark";
   fullWidth?: boolean;
-  icon?: string;
   size?: "xs" | "sm" | "base" | "lg" | "xl";
 }>();
 
@@ -34,27 +28,11 @@ const computedClass = computed(() => {
   switch (props.color) {
     case undefined:
     case null:
-    case "primary":
-      classes.push(
-        "text-white",
-        "bg-blue-500",
-        "hover:bg-blue-800",
-        "focus:ring-blue-300",
-        "dark:bg-blue-600",
-        "dark:hover:bg-blue-700",
-        "dark:focus:ring-blue-800",
-      );
+    case "numbers":
+      classes.push("text-white", "bg-blue-500", "hover:bg-blue-800", "focus:ring-blue-300", "dark:bg-blue-600", "dark:hover:bg-blue-700", "dark:focus:ring-blue-800");
       break;
-    case "secondary":
-      classes.push(
-        "text-white",
-        "bg-gray-500",
-        "hover:bg-gray-800",
-        "focus:ring-gray-300",
-        "dark:bg-gray-600",
-        "dark:hover:bg-gray-700",
-        "dark:focus:ring-gray-800",
-      );
+    case "operators":
+      classes.push("text-white", "bg-gray-500", "hover:bg-gray-800", "focus:ring-gray-300", "dark:bg-gray-600", "dark:hover:bg-gray-700", "dark:focus:ring-gray-800");
       break;
     case "dark":
       classes.push(
