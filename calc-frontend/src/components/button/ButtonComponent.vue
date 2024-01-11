@@ -11,7 +11,7 @@ import { computed } from "vue";
 
 const props = defineProps<{
   text: string;
-  color?: "numbers" | "operators" | "dark";
+  color?: "numbers" | "operators";
   fullWidth?: boolean;
   size?: "xs" | "sm" | "base" | "lg" | "xl";
 }>();
@@ -33,19 +33,6 @@ const computedClass = computed(() => {
       break;
     case "operators":
       classes.push("text-white", "bg-gray-500", "hover:bg-gray-800", "focus:ring-gray-300", "dark:bg-gray-600", "dark:hover:bg-gray-700", "dark:focus:ring-gray-800");
-      break;
-    case "dark":
-      classes.push(
-        "text-white",
-        "bg-gray-500",
-        "hover:bg-gray-800",
-        "focus:ring-gray-300",
-        "dark:text-black",
-        "dark:bg-white",
-        "dark:hover:bg-gray-200",
-        "dark:focus:ring-1",
-        "dark:focus:ring-gray-200",
-      );
       break;
   }
 

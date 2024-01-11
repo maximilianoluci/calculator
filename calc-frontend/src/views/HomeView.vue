@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-screen p-3">
     <div class="m-auto">
-      <button-component text="Toggle Dark/Light Mode" color="dark" :full-width="true" @click="toggleUiMode" />
+      <button-component text="Toggle Dark/Light Mode" color="operators" :full-width="true" @click="toggleUiMode" />
       <hr class="my-3 h-px border-0 bg-gray-200 dark:bg-gray-700" />
       <screen-component class="mb-3" :numbers="numbers" />
 
