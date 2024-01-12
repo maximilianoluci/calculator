@@ -48,7 +48,7 @@
 import { ref } from "vue";
 import ButtonComponent from "@/components/button/ButtonComponent.vue";
 import ScreenComponent from "@/components/screen/ScreenComponent.vue";
-import Stack from "@/classes/stack";
+// import Stack from "@/classes/stack";
 import axios from "axios";
 
 let isDarkMode: boolean = false;
