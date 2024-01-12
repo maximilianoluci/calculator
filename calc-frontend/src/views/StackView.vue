@@ -13,19 +13,19 @@
         <div class="grid grid-cols-1 gap-y-3">
           <div class="flex flex-1 content-evenly gap-3">
             <input-component type="text" />
-            <button-component class="w-1/6" text="PUSH" />
+            <button-component class="w-1/5" text="PUSH" />
           </div>
           <div class="flex gap-3">
             <input-component type="text" />
-            <button-component class="w-1/6" text="POP" />
+            <button-component class="w-1/5" text="POP" />
           </div>
           <div class="flex gap-3">
             <input-component type="text" />
-            <button-component class="w-1/6" text="PEEK" />
+            <button-component class="w-1/5" text="PEEK" />
           </div>
           <div class="flex gap-3">
             <input-component type="text" />
-            <button-component class="w-1/6" text="SIZE" />
+            <button-component class="w-1/5" text="SIZE" />
           </div>
         </div>
       </div>
