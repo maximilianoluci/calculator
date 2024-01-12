@@ -4,6 +4,7 @@
       <button-component text="Toggle Dark/Light Mode" color="operators" :full-width="true" @click="toggleUiMode" />
       <hr class="my-3 h-px border-0 bg-gray-200 dark:bg-gray-700" />
       <screen-component class="mb-3 flex h-64 flex-col overflow-auto" :numbers="numbers" />
+      <!-- <screen-component class="mb-3 flex h-64 flex-col overflow-auto" :numbers="calculationStack" /> -->
 
       <div class="mb-3 grid grid-cols-6 gap-3">
         <div class="col-span-4">
@@ -47,7 +48,7 @@
 import { ref } from "vue";
 import ButtonComponent from "@/components/button/ButtonComponent.vue";
 import ScreenComponent from "@/components/screen/ScreenComponent.vue";
-// import Stack from "@/classes/stack";
+import Stack from "@/classes/stack";
 import axios from "axios";
 
 let isDarkMode: boolean = false;

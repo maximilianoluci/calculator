@@ -1,10 +1,9 @@
-// stack.ts
-
 interface IStack<T> {
   push(item: T): void;
   pop(): T | undefined;
   peek(): T | undefined;
   size(): number;
+  clear(): void;
   length: number;
 }
 
@@ -38,6 +37,11 @@ class Stack<T> implements IStack<T> {
 
   get length(): number {
     return this.size();
+  }
+
+  clear(): void {
+    this.storage = [];
+    this._length = 0;
   }
 
   private updateLength(): void {
